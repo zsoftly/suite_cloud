@@ -2,7 +2,7 @@
 
 A Mail Account's **Daily Send Limit** and **Monthly Send Limit** count recipients per UTC day and month. Each is at least 1 and at most the cluster's **Max Daily Send Limit** and **Max Monthly Send Limit**. A new account starts at its tenant's **Default Daily Send Limit** and **Default Monthly Send Limit**, 2,000 and 10,000 unless an operator changes them. A tenant sets an account's limits through the API only while **Tenant May Set Send Limits** is on.
 
-Suite Cloud enforces the limits. The code is in `suite_cloud/mail/sending_limits.py` (cache, check, flush), `suite_cloud/api/sending_limits.py` (the endpoint) and `suite_cloud/mail/cluster/quota.py` (the Stalwart config).
+Suite Cloud enforces the limits. The code is in `suite_cloud/cloud_mail/sending_limits.py` (cache, check, flush), `suite_cloud/api/sending_limits.py` (the endpoint) and `suite_cloud/cloud_mail/cluster/quota.py` (the Stalwart config).
 
 ## Request flow
 
@@ -16,7 +16,7 @@ Content-Type: application/json
 {"context": {"stage": "rcpt", "sasl": {"login": "jane@acme.example"}, ...}, "envelope": {"from": {...}, "to": [{"address": "..."}]}}
 ```
 
-1. The `authenticate` auth hook takes the bearer as the calling node's Suite Cloud token (`suite_cloud/mail/cluster/server_token.py`). It reads the server of the key from the cache, `suite_cloud:server_token:<key>` for 5 minutes, and compares the SHA-256 of the secret. The caller's cluster is the node's. A gateway's token, an unknown key or a wrong secret is a 401, and the address is throttled. **Enable Telemetry** does not matter. A saved or deleted node or gateway clears its cache key after commit.
+1. The `authenticate` auth hook takes the bearer as the calling node's Suite Cloud token (`suite_cloud/cloud_mail/cluster/server_token.py`). It reads the server of the key from the cache, `suite_cloud:server_token:<key>` for 5 minutes, and compares the SHA-256 of the secret. The caller's cluster is the node's. A gateway's token, an unknown key or a wrong secret is a 401, and the address is throttled. **Enable Telemetry** does not matter. A saved or deleted node or gateway clears its cache key after commit.
 2. The endpoint reads the sender from `context.sasl.login`, stripped and in lowercase. The current recipient is the last entry of `envelope.to`.
 3. It reads the account's cluster and limits from the cache, or from Mail Account on a miss.
 4. One Lua script checks the day and month counters and counts the recipient as sent or refused.

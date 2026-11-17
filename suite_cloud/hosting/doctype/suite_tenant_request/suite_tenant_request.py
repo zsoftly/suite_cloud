@@ -11,7 +11,7 @@ from frappe.model.document import Document
 from frappe.utils import add_to_date, cint, now, now_datetime
 
 from suite_cloud.hosting import begin_step, commit, labels, progress, run_in_background, sites, undo_step
-from suite_cloud.mail.tenancy.addresses import validate_email_address
+from suite_cloud.cloud_mail.tenancy.addresses import validate_email_address
 from suite_cloud.utils import get_config, log_exception
 
 OTP_TTL = 600
@@ -204,7 +204,7 @@ def resume_requests() -> None:
 def ensure_user(request) -> str:
     """The signing-up user, as a Website User holding the Suite Tenant role."""
 
-    from suite_cloud.mail.tenancy.permissions import TENANT_ROLE
+    from suite_cloud.cloud_mail.tenancy.permissions import TENANT_ROLE
 
     if frappe.db.exists("User", request.email):
         user = frappe.get_doc("User", request.email)

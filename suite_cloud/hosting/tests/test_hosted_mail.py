@@ -7,9 +7,9 @@ from suite_cloud.hosting import capacity, labels, progress
 from suite_cloud.hosting.labels import LabelNotAvailableError
 from suite_cloud.hosting.tests.fakes import REGION
 from suite_cloud.hosting.tests.fixtures import MAIL_ZONE, HostingFixtures
-from suite_cloud.mail.tenancy import hosted_domain
-from suite_cloud.mail.tenancy.hosted_domain import HostedObjectError
-from suite_cloud.mail.tests.test_tenancy import TenancyTestCase
+from suite_cloud.cloud_mail.tenancy import hosted_domain
+from suite_cloud.cloud_mail.tenancy.hosted_domain import HostedObjectError
+from suite_cloud.cloud_mail.tests.test_tenancy import TenancyTestCase
 
 DOMAIN = f"acme.{MAIL_ZONE}"
 
@@ -76,7 +76,7 @@ class TestHostedMail(HostingFixtures, TenancyTestCase):
             patch(
                 "suite_cloud.suite_cloud.doctype.dns_record.dns_record.get_dns_provider", return_value=None
             ),
-            patch("suite_cloud.mail.doctype.mail_domain.mail_domain.MailDomain.verify_dns_records") as verify,
+            patch("suite_cloud.cloud_mail.doctype.mail_domain.mail_domain.MailDomain.verify_dns_records") as verify,
         ):
             site = self.claim()
 

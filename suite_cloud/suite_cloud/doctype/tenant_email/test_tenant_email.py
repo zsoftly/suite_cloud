@@ -8,7 +8,7 @@ from frappe.tests import IntegrationTestCase
 
 from suite_cloud.api import email as email_api
 from suite_cloud.api.tenant import InvalidInputError
-from suite_cloud.mail.tests.fixtures import make_owner
+from suite_cloud.cloud_mail.tests.fixtures import make_owner
 from suite_cloud.suite_cloud.doctype.tenant_email import email_types, tenant_email
 from suite_cloud.suite_cloud.doctype.tenant_email.email_types import EMAIL_TYPES, InvalidEmailError
 from suite_cloud.suite_cloud.doctype.tenant_email.tenant_email import EmailNotConfiguredError

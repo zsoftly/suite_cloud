@@ -13,7 +13,7 @@ import frappe
 from frappe import _
 
 from suite_cloud.hosting import checkpoint
-from suite_cloud.mail.tenancy.addresses import DOMAIN_LABEL
+from suite_cloud.cloud_mail.tenancy.addresses import DOMAIN_LABEL
 from suite_cloud.suite_cloud.doctype.dns_zone.dns_zone import relative_host
 from suite_cloud.utils import get_config
 

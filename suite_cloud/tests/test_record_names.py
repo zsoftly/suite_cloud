@@ -4,7 +4,7 @@ import frappe
 from frappe.model.naming import set_new_name
 from frappe.tests import IntegrationTestCase
 
-from suite_cloud.mail.tests.fixtures import configure_settings, make_cluster
+from suite_cloud.cloud_mail.tests.fixtures import configure_settings, make_cluster
 from suite_cloud.patches.v1_0 import name_records_with_uuid7
 
 

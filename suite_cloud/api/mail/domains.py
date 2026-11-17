@@ -3,10 +3,10 @@ from frappe import _
 from frappe.utils import sbool
 
 from suite_cloud.api.tenant import current_tenant, mail_api, owned, owned_names
-from suite_cloud.mail.doctype.mail_domain.mail_domain import domain_payloads
-from suite_cloud.mail.tenancy.addresses import assert_domain_not_reserved, validate_domain_name
-from suite_cloud.mail.tenancy.hosted_domain import assert_not_hosted
-from suite_cloud.mail.tenancy.ownership import ownership_record
+from suite_cloud.cloud_mail.doctype.mail_domain.mail_domain import domain_payloads
+from suite_cloud.cloud_mail.tenancy.addresses import assert_domain_not_reserved, validate_domain_name
+from suite_cloud.cloud_mail.tenancy.hosted_domain import assert_not_hosted
+from suite_cloud.cloud_mail.tenancy.ownership import ownership_record
 
 
 @frappe.whitelist(methods=["GET"])

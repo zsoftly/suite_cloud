@@ -27,8 +27,8 @@ from opentelemetry.proto.metrics.v1.metrics_pb2 import (
 
 from suite_cloud.api.telemetry import authenticate, otlp, webhook
 from suite_cloud.api.tenant import InvalidInputError
-from suite_cloud.mail.cluster import server_token
-from suite_cloud.mail.tests.fixtures import make_cluster, make_node
+from suite_cloud.cloud_mail.cluster import server_token
+from suite_cloud.cloud_mail.tests.fixtures import make_cluster, make_node
 from suite_cloud.telemetry import (
     ERROR_EVENTS,
     EVENT_LEVELS,

@@ -1,8 +1,8 @@
 import frappe
 from frappe.utils import cint
 
-from suite_cloud.mail.stalwart import get_client
-from suite_cloud.mail.tenancy.account_credentials import DEFAULT_LIMIT, KINDS
+from suite_cloud.cloud_mail.stalwart import get_client
+from suite_cloud.cloud_mail.tenancy.account_credentials import DEFAULT_LIMIT, KINDS
 from suite_cloud.utils import child_rows
 
 # Accounts created before the app password and API key limits existed get the defaults, on the

@@ -14,7 +14,7 @@ import pyarrow.parquet as parquet
 
 from suite_cloud.api.telemetry import outbound_scans
 from suite_cloud.api.tenant import InvalidInputError
-from suite_cloud.mail.cluster import rspamd
+from suite_cloud.cloud_mail.cluster import rspamd
 from suite_cloud.telemetry import OUTBOUND_SCAN_SYMBOLS, OUTBOUND_SCANS
 from suite_cloud.telemetry.status import SCAN_CHECK_IN, SCAN_RECORDS, forget_contacts, get_seen_at
 from suite_cloud.telemetry.tests.test_push import PushTestCase

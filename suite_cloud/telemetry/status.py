@@ -12,8 +12,8 @@ import frappe
 from frappe import _
 from frappe.utils import cint, get_datetime, now_datetime, pretty_date
 
-from suite_cloud.mail.cluster import rspamd
-from suite_cloud.mail.cluster.telemetry import get_reporting_servers
+from suite_cloud.cloud_mail.cluster import rspamd
+from suite_cloud.cloud_mail.cluster.telemetry import get_reporting_servers
 from suite_cloud.utils import get_config
 
 if TYPE_CHECKING:

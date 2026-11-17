@@ -1,0 +1,341 @@
+{
+ "actions": [],
+ "autoname": "field:hostname",
+ "creation": "2026-09-03 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "cluster",
+  "hostname",
+  "role",
+  "column_break_main",
+  "enabled",
+  "status",
+  "is_bootstrap_node",
+  "installed_version",
+  "error_section",
+  "last_error",
+  "network_section",
+  "ipv4_address",
+  "ipv6_address",
+  "column_break_network",
+  "in_ingress_dns",
+  "ptr_verified",
+  "ssh_section",
+  "ssh_user",
+  "ssh_port",
+  "column_break_ssh",
+  "ssh_verified",
+  "ssh_host_keys",
+  "suite_cloud_token_section",
+  "suite_cloud_key",
+  "suite_cloud_secret",
+  "column_break_suite_cloud_token",
+  "suite_cloud_token_installed",
+  "outbound_scanner_section",
+  "outbound_scanner_installed",
+  "column_break_outbound_scanner",
+  "outbound_scanner_digest",
+  "state_section",
+  "node_id",
+  "provisioned_at",
+  "column_break_state",
+  "last_health_at"
+ ],
+ "fields": [
+  {
+   "description": "Name shown in lists. Defaults to the hostname.",
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title"
+  },
+  {
+   "fieldname": "cluster",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Cluster",
+   "options": "Stalwart Cluster",
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "description": "Set on first save, e.g. n1.blr.frappemail.com. Reverse DNS of the IP must point to it.",
+   "fieldname": "hostname",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Hostname",
+   "read_only": 1,
+   "set_only_once": 1
+  },
+  {
+   "default": "full",
+   "description": "full: serves clients and sends mail. frontend: serves clients only. outbound: sends mail only. Single-node clusters use full.",
+   "fieldname": "role",
+   "fieldtype": "Select",
+   "label": "Role",
+   "options": "full\nfrontend\noutbound"
+  },
+  {
+   "fieldname": "column_break_main",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "description": "Clear to take the node out of service and stop Stalwart.",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled"
+  },
+  {
+   "default": "Pending",
+   "description": "Pending: not provisioned. Provisioning: a job runs. Provisioned: waits for Stalwart to be healthy. Active: serving. Draining: out of DNS for maintenance. Failed: see Last Error. Disabled: stopped by an operator.",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Pending\nProvisioning\nProvisioned\nActive\nDraining\nFailed\nDisabled",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "description": "Ran the first setup. Cannot be deleted while the cluster is active.",
+   "fieldname": "is_bootstrap_node",
+   "fieldtype": "Check",
+   "label": "Is Bootstrap Node",
+   "read_only": 1
+  },
+  {
+   "description": "Stalwart release installed by the last job.",
+   "fieldname": "installed_version",
+   "fieldtype": "Data",
+   "label": "Installed Version",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.last_error",
+   "fieldname": "error_section",
+   "fieldtype": "Section Break",
+   "label": "Last Error"
+  },
+  {
+   "description": "Why the last job or check failed.",
+   "fieldname": "last_error",
+   "fieldtype": "Small Text",
+   "label": "Last Error",
+   "read_only": 1
+  },
+  {
+   "fieldname": "network_section",
+   "fieldtype": "Section Break",
+   "label": "Network"
+  },
+  {
+   "description": "Public IPv4 of the server, used for SSH and DNS.",
+   "fieldname": "ipv4_address",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "IPv4 Address",
+   "reqd": 1
+  },
+  {
+   "description": "Optional. Gets an AAAA record.",
+   "fieldname": "ipv6_address",
+   "fieldtype": "Data",
+   "label": "IPv6 Address"
+  },
+  {
+   "fieldname": "column_break_network",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "The cluster hostname resolves to this node.",
+   "fieldname": "in_ingress_dns",
+   "fieldtype": "Check",
+   "label": "In Ingress DNS",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "description": "Reverse DNS of the IPv4 points to the hostname. Set it at the server provider.",
+   "fieldname": "ptr_verified",
+   "fieldtype": "Check",
+   "label": "PTR Verified",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "collapsible_depends_on": "eval:!doc.ssh_verified",
+   "fieldname": "ssh_section",
+   "fieldtype": "Section Break",
+   "label": "SSH"
+  },
+  {
+   "description": "Blank uses the cluster SSH user.",
+   "fieldname": "ssh_user",
+   "fieldtype": "Data",
+   "label": "SSH User"
+  },
+  {
+   "description": "Blank uses the cluster SSH port.",
+   "fieldname": "ssh_port",
+   "fieldtype": "Int",
+   "label": "SSH Port"
+  },
+  {
+   "fieldname": "column_break_ssh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Verify SSH reached the server. Required before Provision.",
+   "fieldname": "ssh_verified",
+   "fieldtype": "Check",
+   "label": "SSH Verified",
+   "read_only": 1
+  },
+  {
+   "description": "Recorded on first SSH contact and checked on each connection. After a reinstall, run Reset SSH Host Keys.",
+   "fieldname": "ssh_host_keys",
+   "fieldtype": "Small Text",
+   "label": "SSH Host Keys",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "suite_cloud_token_section",
+   "fieldtype": "Section Break",
+   "label": "Suite Cloud Token"
+  },
+  {
+   "description": "Generated on save. Stalwart sends it with its secret, as SUITE_CLOUD_TOKEN, on every request it makes to Suite Cloud.",
+   "fieldname": "suite_cloud_key",
+   "fieldtype": "Data",
+   "label": "Suite Cloud Key",
+   "no_copy": 1,
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "suite_cloud_secret",
+   "fieldtype": "Password",
+   "label": "Suite Cloud Secret",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_suite_cloud_token",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Set after a job writes the token to stalwart.env and restarts Stalwart.",
+   "fieldname": "suite_cloud_token_installed",
+   "fieldtype": "Check",
+   "label": "Suite Cloud Token Installed",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "outbound_scanner_section",
+   "fieldtype": "Section Break",
+   "label": "Outbound Scanner"
+  },
+  {
+   "default": "0",
+   "description": "Set after a job installs Rspamd, the outbound spam scanner, on this node.",
+   "fieldname": "outbound_scanner_installed",
+   "fieldtype": "Check",
+   "label": "Outbound Scanner Installed",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_outbound_scanner",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "SHA-1 of the Rspamd files the last job wrote. The cluster form lists the nodes where it is out of date.",
+   "fieldname": "outbound_scanner_digest",
+   "fieldtype": "Data",
+   "label": "Outbound Scanner Digest",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "state_section",
+   "fieldtype": "Section Break",
+   "label": "State"
+  },
+  {
+   "description": "ID in the Stalwart cluster registry. 0 on a single node without a coordinator.",
+   "fieldname": "node_id",
+   "fieldtype": "Int",
+   "label": "Node ID",
+   "read_only": 1
+  },
+  {
+   "description": "When the last provisioning or upgrade job succeeded.",
+   "fieldname": "provisioned_at",
+   "fieldtype": "Datetime",
+   "label": "Provisioned At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_state",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "When Stalwart last passed a health check.",
+   "fieldname": "last_health_at",
+   "fieldtype": "Datetime",
+   "label": "Last Health At",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "group": "Jobs",
+   "link_doctype": "Server Job",
+   "link_fieldname": "server"
+  },
+  {
+   "group": "DNS",
+   "link_doctype": "DNS Record",
+   "link_fieldname": "managed_by"
+  }
+ ],
+ "modified": "2026-11-05 23:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Cloud Mail",
+ "name": "Stalwart Node",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "show_title_field_in_link": 1,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "title",
+ "track_changes": 1
+}

@@ -1,0 +1,146 @@
+{
+ "actions": [],
+ "creation": "2026-09-03 12:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "record_section",
+  "record_type",
+  "host",
+  "value",
+  "column_break_record",
+  "category",
+  "priority",
+  "weight",
+  "port",
+  "ttl",
+  "verification_section",
+  "is_verified",
+  "is_mandatory",
+  "column_break_verification",
+  "last_checked_at"
+ ],
+ "fields": [
+  {
+   "fieldname": "record_section",
+   "fieldtype": "Section Break",
+   "label": "Record"
+  },
+  {
+   "columns": 1,
+   "fieldname": "record_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Type",
+   "options": "MX\nTXT\nCNAME\nSRV",
+   "read_only": 1
+  },
+  {
+   "columns": 2,
+   "description": "Name relative to the domain. @ is the domain itself.",
+   "fieldname": "host",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Host",
+   "read_only": 1
+  },
+  {
+   "columns": 5,
+   "description": "Value the record must have. For MX and SRV, the target hostname only.",
+   "fieldname": "value",
+   "fieldtype": "Text",
+   "in_list_view": 1,
+   "label": "Value",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_record",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 1,
+   "description": "Protocol the record is for.",
+   "fieldname": "category",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Category",
+   "options": "MX\nSPF\nDKIM\nDMARC\nMTA-STS\nTLS-RPT\nSRV\nAutoconfig\nAutodiscover\nUA Auto Config",
+   "read_only": 1
+  },
+  {
+   "description": "MX and SRV only. Lower is preferred.",
+   "fieldname": "priority",
+   "fieldtype": "Int",
+   "label": "Priority",
+   "read_only": 1
+  },
+  {
+   "description": "SRV only. Shares load between records with the same priority.",
+   "fieldname": "weight",
+   "fieldtype": "Int",
+   "label": "Weight",
+   "read_only": 1
+  },
+  {
+   "description": "SRV only.",
+   "fieldname": "port",
+   "fieldtype": "Int",
+   "label": "Port",
+   "read_only": 1
+  },
+  {
+   "description": "Cache time in seconds.",
+   "fieldname": "ttl",
+   "fieldtype": "Int",
+   "label": "TTL",
+   "read_only": 1
+  },
+  {
+   "fieldname": "verification_section",
+   "fieldtype": "Section Break",
+   "label": "Verification"
+  },
+  {
+   "columns": 1,
+   "default": "0",
+   "description": "The record resolved to the expected value at the last check.",
+   "fieldname": "is_verified",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Verified",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "description": "Required for the domain to be verified.",
+   "fieldname": "is_mandatory",
+   "fieldtype": "Check",
+   "label": "Mandatory",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_verification",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_checked_at",
+   "fieldtype": "Datetime",
+   "label": "Last Checked At",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-10-28 17:45:14.960660",
+ "modified_by": "Administrator",
+ "module": "Cloud Mail",
+ "name": "Mail Domain DNS Record",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -336,7 +336,7 @@ def drop(site: str) -> None:
     checkpoint()
     try:
         drop_from_server(doc)
-        from suite_cloud.mail.tenancy import hosted_domain
+        from suite_cloud.cloud_mail.tenancy import hosted_domain
 
         hosted_domain.detach(doc)
         delete_managed_records("Suite Site", doc.name)

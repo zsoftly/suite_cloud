@@ -1,6 +1,6 @@
 import frappe
 
-from suite_cloud.mail.tenancy.permissions import TENANT_ROLE
+from suite_cloud.cloud_mail.tenancy.permissions import TENANT_ROLE
 
 
 def execute() -> None:

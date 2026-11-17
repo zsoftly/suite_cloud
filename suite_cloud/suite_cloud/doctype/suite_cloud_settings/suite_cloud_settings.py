@@ -105,7 +105,7 @@ class SuiteCloudSettings(Document):
         clear_config_cache()
         before = self.get_doc_before_save()
         if before and cint(before.skip_domain_verification) and not cint(self.skip_domain_verification):
-            from suite_cloud.mail.doctype.mail_domain.mail_domain import (
+            from suite_cloud.cloud_mail.doctype.mail_domain.mail_domain import (
                 enqueue_recheck_of_vouched_domains,
             )
 
@@ -125,7 +125,7 @@ class SuiteCloudSettings(Document):
         """Off is in the cluster plan, so each active cluster is pushed again. Observe, Enforce and
         the reject score are in the nodes' Rspamd files, which only a scanner install writes."""
 
-        from suite_cloud.mail.cluster import push, rspamd
+        from suite_cloud.cloud_mail.cluster import push, rspamd
 
         if (before.outbound_scan_mode == "Off") != (self.outbound_scan_mode == "Off"):
             for name in frappe.get_all("Stalwart Cluster", {"status": "Active"}, pluck="name"):
