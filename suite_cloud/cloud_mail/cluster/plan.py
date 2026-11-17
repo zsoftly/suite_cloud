@@ -678,12 +678,21 @@ def _drifted(object_type: str, live: dict, wanted: dict, ref: str | None = None)
     for key, value in wanted.items():
         if key == "@type" or is_write_only(key, value):
             continue  # secrets are never echoed back
-        if not same_value(live.get(key), value):
+        if not same_value(live_value(live, key), value):
             entry = {"object": object_type, "property": key}
             if ref:
                 entry["ref"] = ref
             found.append(entry)
     return found
+
+
+def live_value(live: dict, key: str):
+    """A property, or a JSON pointer such as ``services/jmap`` that an update patches in place."""
+
+    value = live
+    for part in key.split("/"):
+        value = value.get(part) if isinstance(value, dict) else None
+    return value
 
 
 def same_value(live, wanted) -> bool:
