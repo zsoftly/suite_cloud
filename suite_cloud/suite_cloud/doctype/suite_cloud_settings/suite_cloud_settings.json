@@ -411,8 +411,8 @@
    "label": "Versions"
   },
   {
-   "default": "v0.16.27",
-   "description": "Stalwart release for new clusters, e.g. v0.16.27.",
+   "default": "v1.1.1",
+   "description": "Stalwart release for new clusters, e.g. v1.1.1.",
    "fieldname": "stalwart_version",
    "fieldtype": "Data",
    "label": "Stalwart Version",
@@ -428,8 +428,8 @@
    "reqd": 1
   },
   {
-   "default": "v3.0.1",
-   "description": "Spam filter rules a new cluster imports, e.g. v3.0.1. Change it with the Stalwart Version. Blank imports the latest.",
+   "default": "v3.0.4",
+   "description": "Spam filter rules a new cluster imports, e.g. v3.0.4. Change it with the Stalwart Version. Blank imports the latest.",
    "fieldname": "spam_filter_rules_version",
    "fieldtype": "Data",
    "label": "Spam Filter Rules Version"
@@ -439,8 +439,8 @@
    "fieldtype": "Column Break"
   },
   {
-   "default": "v1.0.12",
-   "description": "stalwart-cli release used to bootstrap a cluster, e.g. v1.0.12.",
+   "default": "v2.0.0",
+   "description": "stalwart-cli release used to bootstrap a cluster, e.g. v2.0.0.",
    "fieldname": "stalwart_cli_version",
    "fieldtype": "Data",
    "label": "Stalwart CLI Version",

@@ -150,7 +150,7 @@ def bootstrap_plan(cluster: Document) -> list[dict]:
 
     store = cluster.get_store
     value = {
-        "serverHostname": cluster.hostname,
+        "defaultHostname": cluster.hostname,
         "defaultDomain": cluster.default_domain,
         "requestTlsCertificate": False,
         "generateDkimKeys": False,
@@ -168,13 +168,21 @@ def bootstrap_plan(cluster: Document) -> list[dict]:
 # --- cluster --------------------------------------------------------------------------
 
 
+def is_external(cluster: Document) -> bool:
+    """Externally managed (suite_cloud.mail.cluster.external): the platform owns its nodes'
+    files, resolver, logging and certificates, so the plan leaves those out."""
+
+    return bool(cluster.get("externally_managed"))
+
+
 def cluster_plan(cluster: Document) -> list[dict]:
+    external = is_external(cluster)
     plan: list[dict] = [
         {"@type": "update", "object": "Coordinator", "value": {"@type": cluster.coordinator or "Disabled"}},
-        *defaults_plan(),
-        tracer_operation(),
-        *telemetry_operations(cluster),
+        *defaults_plan(cluster),
     ]
+    if not external:
+        plan.extend([tracer_operation(), *telemetry_operations(cluster)])
 
     dns_server = dns_server_object(cluster)
     if dns_server:
@@ -187,14 +195,15 @@ def cluster_plan(cluster: Document) -> list[dict]:
             }
         )
 
-    plan.append(
-        {
-            "@type": "upsert",
-            "object": "AcmeProvider",
-            "matchOn": ["directory"],
-            "value": {"acme": acme_provider(cluster)},
-        }
-    )
+    if not external:
+        plan.append(
+            {
+                "@type": "upsert",
+                "object": "AcmeProvider",
+                "matchOn": ["directory"],
+                "value": {"acme": acme_provider(cluster)},
+            }
+        )
     plan.append(
         {
             "@type": "upsert",
@@ -203,17 +212,15 @@ def cluster_plan(cluster: Document) -> list[dict]:
             "value": {"default": default_domain(cluster, with_dns=bool(dns_server))},
         }
     )
-    plan.append(
-        {
-            "@type": "update",
-            "object": "SystemSettings",
-            "value": {
-                "defaultHostname": cluster.hostname,
-                "defaultDomainId": "#default",
-                "mailExchangers": as_list([{"hostname": cluster.hostname, "priority": 10}]),
-            },
-        }
-    )
+    settings = {
+        "defaultHostname": cluster.hostname,
+        "defaultDomainId": "#default",
+        "mailExchangers": as_list([{"hostname": cluster.hostname, "priority": 10}]),
+    }
+    if external and cluster.get("jmap_hostname"):
+        # The host Stalwart writes into its JMAP session URLs, which tenants' sites follow.
+        settings["services/jmap"] = {"hostname": cluster.jmap_hostname, "cleartext": False}
+    plan.append({"@type": "update", "object": "SystemSettings", "value": settings})
     plan.append(
         {
             "@type": "upsert",
@@ -257,7 +264,7 @@ def default_domain(cluster: Document, with_dns: bool) -> dict:
     domain = {
         "name": cluster.default_domain,
         "description": "Cluster default domain",
-        "isEnabled": True,
+        "enable": True,
         "certificateManagement": {
             "@type": "Automatic",
             "acmeProviderId": "#acme",
@@ -266,7 +273,9 @@ def default_domain(cluster: Document, with_dns: bool) -> dict:
             "subjectAlternativeNames": as_set(
                 [cluster.default_domain, f"*.{cluster.default_domain}", *cluster.additional_hostname_list]
             ),
-        },
+        }
+        if not is_external(cluster)
+        else {"@type": "Manual"},  # the platform holds an external server's certificates
         "dkimManagement": dkim_management_payload(dkim_algorithms()),
         "subAddressing": {"@type": "Disabled"},
     }
@@ -365,7 +374,7 @@ def https_listener_operation() -> dict:
         "protocol": "http",
         "bind": as_set(["[::]:443"]),
         "useTls": True,
-        "tlsImplicit": True,
+        "implicitTls": True,
     }
     return {"@type": "upsert", "object": "NetworkListener", "matchOn": ["name"], "value": {"https": listener}}
 
@@ -391,7 +400,7 @@ def store_operations(cluster: Document) -> list[dict]:
     ]
 
 
-def defaults_plan() -> list[dict]:
+def defaults_plan(cluster: Document | None = None) -> list[dict]:
     """Applied in recovery mode before the first normal start, which needs all of it.
 
     That start names the node's cluster role (Stalwart fails the start when it is missing),
@@ -402,7 +411,8 @@ def defaults_plan() -> list[dict]:
 
     return [
         {"@type": "upsert", "object": "ClusterRole", "matchOn": ["name"], "value": CLUSTER_ROLES},
-        dns_resolver_operation(),
+        # An external server resolves through its platform (Kubernetes DNS): no local Unbound.
+        *([] if cluster is not None and is_external(cluster) else [dns_resolver_operation()]),
         *spam_settings_operations(),
     ]
 

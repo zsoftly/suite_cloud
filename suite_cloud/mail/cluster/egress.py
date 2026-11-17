@@ -121,7 +121,7 @@ def cluster_operations(cluster: Document) -> list[dict]:
             "@type": "Relay",
             "name": f"egress-{pool.pool_name}",
             "description": f"Egress pool {pool.pool_name}",
-            "address": pool.hostname,
+            "host": pool.hostname,
             "port": pool.relay_port,
             "protocol": "smtp",
             "authUsername": cluster.relay_username or "relay",
@@ -288,7 +288,7 @@ def gateway_plan(gateway: Document) -> list[dict]:
             "protocol": "smtp",
             "bind": {f"0.0.0.0:{pool.relay_port}": True},
             "useTls": True,
-            "tlsImplicit": False,
+            "implicitTls": False,
         }
         strategies[pool.pool_name] = {
             "name": pool.pool_name,
@@ -334,7 +334,7 @@ def gateway_plan(gateway: Document) -> list[dict]:
     domain = {
         "name": gateway.hostname,
         "description": "Gateway domain",
-        "isEnabled": True,
+        "enable": True,
         "certificateManagement": {
             "@type": "Automatic",
             "acmeProviderId": "#acme",
@@ -447,7 +447,7 @@ def gateway_defaults_plan() -> list[dict]:
 
 def gateway_bootstrap_plan(gateway: Document) -> list[dict]:
     value = {
-        "serverHostname": gateway.hostname,
+        "defaultHostname": gateway.hostname,
         "defaultDomain": gateway.hostname,
         "requestTlsCertificate": False,
         "generateDkimKeys": False,

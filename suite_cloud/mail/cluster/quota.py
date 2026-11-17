@@ -23,6 +23,10 @@ NEVER = {"match": as_list([]), "else": "false"}
 
 
 def cluster_operations(cluster: Document) -> list[dict]:
+    # The hook authenticates with a token each node holds in its environment, which Suite Cloud
+    # installs only on servers it provisions; an external server keeps the native backstop.
+    if cluster.get("externally_managed"):
+        return [backstop_operation(cluster)]
     return [hook_operation(cluster), backstop_operation(cluster)]
 
 

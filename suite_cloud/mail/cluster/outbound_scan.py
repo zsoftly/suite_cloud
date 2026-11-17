@@ -32,6 +32,9 @@ SCANNED = {
 
 
 def cluster_operations(cluster: Document) -> list[dict]:
+    # The scanner is an Rspamd that Suite Cloud installs next to each node it provisions.
+    if cluster.get("externally_managed"):
+        return []
     return [milter_operation(cluster)]
 
 
@@ -42,13 +45,13 @@ def milter_operation(cluster: Document) -> dict:
 
     milter = {
         "enable": SCANNED if is_scan_enabled(cluster) else NEVER,
-        "hostname": rspamd.MILTER_HOST,
+        "host": rspamd.MILTER_HOST,
         "port": rspamd.MILTER_PORT,
         "stages": as_set(["data"]),
         "tempFailOnError": False,
-        "timeoutConnect": 1000,
-        "timeoutCommand": 5000,
-        "timeoutData": 6000,  # longer than Rspamd's task_timeout, so it answers with what it has
+        "connectTimeout": 1000,
+        "commandTimeout": 5000,
+        "dataTimeout": 6000,  # longer than Rspamd's task_timeout, so it answers with what it has
         "protocolVersion": "v6",
         "useTls": False,
         "maxResponseSize": 52428800,
@@ -56,7 +59,7 @@ def milter_operation(cluster: Document) -> dict:
     return {
         "@type": "upsert",
         "object": "MtaMilter",
-        "matchOn": ["hostname", "port"],
+        "matchOn": ["host", "port"],
         "value": {"outbound-scan": milter},
     }
 

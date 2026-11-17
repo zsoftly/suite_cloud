@@ -196,7 +196,7 @@ class MailDomain(Document):
     def stalwart_patch(self) -> dict:
         return {
             "description": self.description or f"Suite Tenant {self.tenant}",
-            "isEnabled": self.is_live(),
+            "enable": self.is_live(),
             "catchAllAddress": self.catch_all_address or None,
             "subAddressing": {"@type": "Enabled" if self.sub_addressing else "Disabled"},
             "allowRelaying": bool(self.allow_relaying),
@@ -279,7 +279,7 @@ class MailDomain(Document):
         self.last_verified_at = checked_at
         if self.stalwart_id and was_live != self.is_live():
             # Cluster first: a failed push must not leave the local flag ahead of Stalwart.
-            sync.push_update(self, "domains", {"isEnabled": self.is_live()})
+            sync.push_update(self, "domains", {"enable": self.is_live()})
         self.save_records()
         return {"inconclusive": inconclusive, "is_verified": bool(self.is_verified), **self.records_payload()}
 

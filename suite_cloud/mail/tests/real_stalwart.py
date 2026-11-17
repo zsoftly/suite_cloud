@@ -137,7 +137,7 @@ class RealStalwart:
             {"doctype": "Mail Store", "kind": "Data", "type": "RocksDb", "path": self.path("data")}
         )
         return {
-            "serverHostname": HOSTNAME,
+            "defaultHostname": HOSTNAME,
             "defaultDomain": HOSTNAME.partition(".")[2],
             "requestTlsCertificate": False,
             "generateDkimKeys": False,
@@ -163,7 +163,7 @@ class RealStalwart:
                     "protocol": protocol,
                     "bind": plan.as_set([f"127.0.0.1:{port}"]),
                     "useTls": False,
-                    "tlsImplicit": False,
+                    "implicitTls": False,
                 }
             )
 

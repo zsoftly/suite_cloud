@@ -20,6 +20,9 @@
   "hostname",
   "default_domain",
   "base_url",
+  "external_section",
+  "externally_managed",
+  "jmap_hostname",
   "tls_section",
   "acme_directory_url",
   "column_break_tls",
@@ -174,11 +177,31 @@
    "read_only": 1
   },
   {
-   "description": "JMAP URL given to tenants.",
+   "description": "JMAP URL given to tenants. Derived from the hostname, or the server's in-cluster URL for an externally managed cluster.",
    "fieldname": "base_url",
    "fieldtype": "Data",
    "label": "Base URL",
-   "read_only": 1
+   "read_only_depends_on": "eval:!doc.externally_managed"
+  },
+  {
+   "fieldname": "external_section",
+   "fieldtype": "Section Break",
+   "label": "External Server"
+  },
+  {
+   "fieldname": "externally_managed",
+   "fieldtype": "Check",
+   "default": "0",
+   "label": "Externally Managed",
+   "set_only_once": 1,
+   "description": "Stalwart runs outside Suite Cloud (for example on Kubernetes, deployed by Argo CD). Suite Cloud never provisions nodes over SSH for it: it adopts the running server over the JMAP management API and manages its configuration and directory."
+  },
+  {
+   "fieldname": "jmap_hostname",
+   "fieldtype": "Data",
+   "label": "JMAP Service Hostname",
+   "depends_on": "externally_managed",
+   "description": "Host name Stalwart writes into its JMAP session URLs (https://<host>/jmap/), which tenants' sites follow, e.g. the Kubernetes Service name. It must resolve to the server and match its certificate. Blank keeps the server's default hostname."
   },
   {
    "fieldname": "tls_section",
@@ -348,7 +371,7 @@
    "fieldname": "ssh_user",
    "fieldtype": "Data",
    "label": "SSH User",
-   "reqd": 1
+   "mandatory_depends_on": "eval:!doc.externally_managed"
   },
   {
    "default": "22",
@@ -356,7 +379,7 @@
    "fieldname": "ssh_port",
    "fieldtype": "Int",
    "label": "SSH Port",
-   "reqd": 1
+   "mandatory_depends_on": "eval:!doc.externally_managed"
   },
   {
    "fieldname": "column_break_ssh",
@@ -550,7 +573,7 @@
    "link_fieldname": "cluster"
   }
  ],
- "modified": "2026-11-16 10:00:00.000000",
+ "modified": "2026-11-17 06:00:00.000000",
  "modified_by": "Administrator",
  "module": "Mail",
  "name": "Stalwart Cluster",

@@ -73,7 +73,7 @@ class TestTelemetryPlan(IntegrationTestCase):
             {
                 "openTelemetry": {
                     "@type": "Http",
-                    "endpoint": f"{base}otlp",
+                    "url": f"{base}otlp",
                     "interval": 60_000,
                     "timeout": 10_000,
                     "httpAuth": TOKEN,

@@ -339,7 +339,7 @@ class TestDomainOwnership(TenantApiTestCase):
         domain = frappe.get_doc("Mail Domain", "acme.com")
         self.assertTrue(domain.is_live())
         self.assertTrue(domain.skip_scheduled_verification)
-        self.assertTrue(self.fake.all("Domain")[0]["isEnabled"])
+        self.assertTrue(self.fake.all("Domain")[0]["enable"])
 
         # Asking to verify does not take the word back, whatever the resolvers say.
         with resolved_domain_records(False):
@@ -353,7 +353,7 @@ class TestDomainOwnership(TenantApiTestCase):
         domain.reload()
         self.assertFalse(domain.is_live())
         self.assertFalse(domain.verification_skipped or domain.skip_scheduled_verification)
-        self.assertFalse(self.fake.all("Domain")[0]["isEnabled"])
+        self.assertFalse(self.fake.all("Domain")[0]["enable"])
         self.act_as(self.tenant)
         with patch("suite_cloud.mail.tenancy.ownership.verify_dns_record", return_value=False):
             self.assertRaises(DomainNotVerifiedError, domains.create_domain, "other.com")

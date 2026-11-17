@@ -97,7 +97,7 @@ def otlp_exporter() -> dict:
     interval = cint(get_config("metrics_push_interval_seconds")) or DEFAULT_PUSH_INTERVAL_SECONDS
     return {
         "@type": "Http",
-        "endpoint": api_url("otlp"),
+        "url": api_url("otlp"),
         "interval": interval * 1000,
         "timeout": OTLP_TIMEOUT_MS,
         "httpAuth": server_token.bearer_auth(),

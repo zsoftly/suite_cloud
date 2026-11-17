@@ -68,18 +68,18 @@ class TestMilterPlan(OutboundScanTestCase):
     def test_the_plan_holds_the_milter(self) -> None:
         operations = [op for op in plan.cluster_plan(self.cluster) if op["object"] == "MtaMilter"]
         self.assertEqual(len(operations), 1)
-        self.assertEqual(operations[0]["matchOn"], ["hostname", "port"])
+        self.assertEqual(operations[0]["matchOn"], ["host", "port"])
         milter = operations[0]["value"]["outbound-scan"]
         self.assertEqual(
             {key: value for key, value in milter.items() if key != "enable"},
             {
-                "hostname": "127.0.0.1",
+                "host": "127.0.0.1",
                 "port": 11332,
                 "stages": {"data": True},
                 "tempFailOnError": False,
-                "timeoutConnect": 1000,
-                "timeoutCommand": 5000,
-                "timeoutData": 6000,
+                "connectTimeout": 1000,
+                "commandTimeout": 5000,
+                "dataTimeout": 6000,
                 "protocolVersion": "v6",
                 "useTls": False,
                 "maxResponseSize": 52428800,

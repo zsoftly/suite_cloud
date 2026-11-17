@@ -261,7 +261,7 @@ class TestMailDomain(TenancyTestCase):
             "Domain",
             {
                 "name": "legacy.com",
-                "isEnabled": True,
+                "enable": True,
                 "description": "Legacy",
                 "subAddressing": {"@type": "Disabled"},
                 "allowRelaying": True,
@@ -519,32 +519,32 @@ class TestMailDomain(TenancyTestCase):
 
     def test_verified_set_by_hand_goes_live(self) -> None:
         domain = self.make_domain(is_verified=0)
-        self.assertFalse(self.fake.find("Domain", name="acme.com")["isEnabled"])
+        self.assertFalse(self.fake.find("Domain", name="acme.com")["enable"])
 
         domain.is_verified = 1
         domain.save()
-        self.assertTrue(self.fake.find("Domain", name="acme.com")["isEnabled"])
+        self.assertTrue(self.fake.find("Domain", name="acme.com")["enable"])
 
         domain.is_verified = 0
         domain.save()
-        self.assertFalse(self.fake.find("Domain", name="acme.com")["isEnabled"])
+        self.assertFalse(self.fake.find("Domain", name="acme.com")["enable"])
 
     def test_disabling_clears_verification(self) -> None:
         domain = self.make_domain(is_verified=0)
         domain.is_verified = 1
         domain.save()
-        self.assertTrue(self.fake.find("Domain", name="acme.com")["isEnabled"])
+        self.assertTrue(self.fake.find("Domain", name="acme.com")["enable"])
 
         domain.enabled = 0
         domain.save()
         self.assertFalse(domain.is_verified)
-        self.assertFalse(self.fake.find("Domain", name="acme.com")["isEnabled"])
+        self.assertFalse(self.fake.find("Domain", name="acme.com")["enable"])
 
         # Enabling brings nothing back on its own: the records have to be verified again.
         domain.enabled = 1
         domain.save()
         self.assertFalse(domain.is_verified)
-        self.assertFalse(self.fake.find("Domain", name="acme.com")["isEnabled"])
+        self.assertFalse(self.fake.find("Domain", name="acme.com")["enable"])
 
     def test_only_a_live_domain_takes_accounts_groups_and_lists(self) -> None:
         domain = self.make_domain(is_verified=0)
@@ -571,11 +571,11 @@ class TestMailDomain(TenancyTestCase):
         domain.enabled = 0  # edited on the form, not saved
         self.assertRaisesRegex(frappe.ValidationError, "Save the domain", domain.verify_dns_records)
         self.assertRaisesRegex(frappe.ValidationError, "Save the domain", domain.refresh_dns_records)
-        self.assertTrue(self.fake.find("Domain", name="acme.com")["isEnabled"])
+        self.assertTrue(self.fake.find("Domain", name="acme.com")["enable"])
 
     def test_domain_goes_live_only_once_verified(self) -> None:
         domain = self.make_domain(is_verified=0)
-        self.assertFalse(self.fake.find("Domain", name="acme.com")["isEnabled"])
+        self.assertFalse(self.fake.find("Domain", name="acme.com")["enable"])
 
         for row in domain.dns_rows():
             row.is_verified = 1
@@ -585,11 +585,11 @@ class TestMailDomain(TenancyTestCase):
             result = domain.verify_dns_records()
 
         self.assertTrue(result["is_verified"])
-        self.assertTrue(self.fake.find("Domain", name="acme.com")["isEnabled"])
+        self.assertTrue(self.fake.find("Domain", name="acme.com")["enable"])
 
         domain.enabled = 0
         domain.save()
-        self.assertFalse(self.fake.find("Domain", name="acme.com")["isEnabled"])
+        self.assertFalse(self.fake.find("Domain", name="acme.com")["enable"])
 
     def test_verification_rule_and_inconclusive_lookups(self) -> None:
         domain = self.make_domain()

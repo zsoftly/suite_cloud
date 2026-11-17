@@ -200,7 +200,8 @@ class MailStore(Document):
             "database": self.database or "stalwart",
             "authUsername": self.auth_username or "stalwart",
             "authSecret": secret(self, "auth_secret"),
-            "timeout": ms(self.timeout, 15),
+            # PostgreSqlStore.connectTimeout; MySqlStore.idleTimeout (Stalwart 1.x names)
+            "connectTimeout" if self.type == "PostgreSql" else "idleTimeout": ms(self.timeout, 15),
             "useTls": bool(self.use_tls),
             "allowInvalidCerts": bool(self.allow_invalid_certs),
             "poolMaxConnections": cint(self.pool_max_connections) or 10,
@@ -236,7 +237,7 @@ class MailStore(Document):
             "region": self._s3_region(),
             "bucket": self.bucket,
             # Stalwart's PublicString union: shaped like a secret, but shown in the clear.
-            "accessKey": {"@type": "Value", "value": self.access_key} if self.access_key else None,
+            "accessKeyId": {"@type": "Value", "value": self.access_key} if self.access_key else None,
             "secretKey": secret(self, "secret_key"),
             "keyPrefix": self.key_prefix or None,
             "timeout": ms(self.timeout, 30),
@@ -252,7 +253,7 @@ class MailStore(Document):
 
         self.validate_s3_region()  # stores saved before the check existed
         if self.endpoint:
-            return {"@type": "Custom", "customEndpoint": self.endpoint, "customRegion": self.region}
+            return {"@type": "Custom", "url": self.endpoint, "region": self.region}
         return {"@type": "".join(part.capitalize() for part in self.region.split("-"))}
 
     def _http_auth(self) -> dict:
@@ -277,7 +278,7 @@ class MailStore(Document):
         return {
             "url": self.url,
             "pollInterval": ms(self.poll_interval, 0.5),
-            "maxRetries": cint(self.max_retries) or 120,
+            "maxPolls": cint(self.max_retries) or 120,
             "failOnTimeout": bool(self.fail_on_timeout),
             "timeout": ms(self.timeout, 30),
             "allowInvalidCerts": bool(self.allow_invalid_certs),
@@ -286,7 +287,7 @@ class MailStore(Document):
 
     def _pool(self) -> dict:
         return {
-            "timeout": ms(self.timeout, 10),
+            "connectTimeout": ms(self.timeout, 10),
             "poolMaxConnections": cint(self.pool_max_connections) or 10,
             "poolTimeoutCreate": ms(self.pool_timeout_create, 30),
             "poolTimeoutWait": ms(self.pool_timeout_wait, 30),

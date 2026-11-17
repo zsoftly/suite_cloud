@@ -85,7 +85,7 @@ def _adopt_domains(tenant, cluster, client, report: Report) -> dict[str, str]:
             "id",
             "name",
             "description",
-            "isEnabled",
+            "enable",
             "catchAllAddress",
             "subAddressing",
             "allowRelaying",
@@ -98,7 +98,7 @@ def _adopt_domains(tenant, cluster, client, report: Report) -> dict[str, str]:
         if frappe.db.exists("Mail Domain", name):
             report.skip("Mail Domain", name, _("already exists"))
             continue
-        enabled = bool(live.get("isEnabled"))
+        enabled = bool(live.get("enable"))
         _insert(
             report,
             "Mail Domain",
@@ -242,7 +242,7 @@ def _alias_rows(live: dict, domains: dict[str, str]) -> list[dict]:
         rows.append(
             {
                 "alias_email": f"{alias['name']}@{domain}".lower(),
-                "enabled": int(alias.get("enabled", True)),
+                "enabled": int(alias.get("enable", True)),
                 "description": alias.get("description"),
             }
         )

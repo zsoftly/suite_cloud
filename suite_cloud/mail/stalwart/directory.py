@@ -37,7 +37,7 @@ class EmailAlias:
         return {
             "name": self.name,
             "domainId": self.domain_id,
-            "enabled": self.enabled,
+            "enable": self.enabled,
             "description": self.description,
         }
 
@@ -197,7 +197,7 @@ class Domain:
         return {
             "name": self.name,
             "aliases": id_set(self.aliases),
-            "isEnabled": self.is_enabled,
+            "enable": self.is_enabled,
             "description": self.description,
             "certificateManagement": self.certificate_management or {"@type": "Manual"},
             "dkimManagement": dkim_management_payload(self.dkim_algorithms),
@@ -346,7 +346,7 @@ class GroupService(AccountService):
 
 class DomainService(ManagementService):
     type = "Domain"
-    default_properties: ClassVar[list[str]] = ["id", "name", "description", "isEnabled", "createdAt"]
+    default_properties: ClassVar[list[str]] = ["id", "name", "description", "enable", "createdAt"]
 
     def find_by_name(self, name: str, properties: list[str] | None = None) -> dict | None:
         return self.find({"name": name}, properties=properties or ["id", "name"])

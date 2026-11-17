@@ -15,6 +15,7 @@ from suite_cloud.mail.cluster import (
     bootstrap,
     dns,
     egress,
+    external,
     naming,
     outbound_scan,
     plan,
@@ -102,7 +103,7 @@ class StalwartCluster(Document):
         self.relay_username = self.relay_username or "relay"
         if not self.relay_password:
             self.relay_password = frappe.generate_hash(length=32)
-        if not self.ssh_public_key:
+        if not self.ssh_public_key and not self.externally_managed:
             self.ssh_private_key, self.ssh_public_key = generate_keypair(f"suite-cloud-{self.hostname}")
         if not frappe.db.exists("Stalwart Cluster", {"is_default": 1}):
             self.is_default = 1  # the first cluster: there is always a default
@@ -110,6 +111,7 @@ class StalwartCluster(Document):
     def validate(self) -> None:
         validate_ssh_user_field(self)
         self.validate_names()
+        external.validate_cluster(self)
         self.validate_additional_hostnames()
         self.apply_defaults()
         self.validate_stores()
@@ -190,7 +192,8 @@ class StalwartCluster(Document):
         self.label = self.label or naming.next_cluster_label(self.dns_zone, self.region)
         self.hostname = f"mail.{self.label}.{self.dns_zone}"
         self.default_domain = self.hostname
-        self.base_url = f"https://{self.hostname}"
+        if not (self.externally_managed and self.base_url):
+            self.base_url = f"https://{self.hostname}"
 
     def validate_names(self) -> None:
         self.resolve_label()
@@ -357,6 +360,16 @@ class StalwartCluster(Document):
 
         frappe.only_for("System Manager")
         return reconcile.directory_report(self)
+
+    @frappe.whitelist()
+    def adopt_external_server(self, username: str, password: str) -> dict:
+        """Takes over a running Stalwart that Suite Cloud did not install (Kubernetes, Argo CD).
+
+        The credentials are the server's recovery administrator; they are used for this call only
+        and never stored."""
+
+        frappe.only_for("System Manager")
+        return external.adopt(self, username, password)
 
     @frappe.whitelist()
     def finish_bootstrap(self) -> bool:

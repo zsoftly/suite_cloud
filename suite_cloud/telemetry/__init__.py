@@ -87,7 +87,7 @@ EVENT_LEVELS = {
 }
 WEBHOOK_EVENTS = tuple(EVENT_LEVELS)
 
-# Every other event Stalwart 0.16 logs at error level (``EventType::level()`` in its ``trc`` crate).
+# Every other event Stalwart 1.x logs at error level (``EventType::level()`` in its ``trc`` crate).
 # A WebHook ignores its level and sends whatever its list allows, so the errors webhook names them.
 ERROR_EVENTS = (
     "acme.error",
@@ -95,7 +95,6 @@ ERROR_EVENTS = (
     "cluster.publisher-error",
     "cluster.subscriber-error",
     "dkim.build-error",
-    "dns.build-error",
     "message-ingest.error",
     "network.bind-error",
     "network.listen-error",
@@ -145,8 +144,6 @@ WARN_EVENTS = (
     "acme.order-invalid",
     "acme.tls-alpn-error",
     "acme.token-not-found",
-    "ai.api-error",
-    "arc.sealer-not-found",
     "calendar.alarm-failed",
     "cluster.subscriber-disconnected",
     "delivery.concurrency-limit-exceeded",
@@ -183,10 +180,8 @@ WARN_EVENTS = (
     "smtp.missing-local-hostname",
     "spam.train-sample-not-found",
     "store.blob-missing-marker",
-    "store.cache-entry-too-large",
     "store.http-store-error",
     "task-manager.task-failed",
-    "telemetry.alert-event",
     "telemetry.journal-error",
     "telemetry.log-error",
     "telemetry.otel-exporter-error",

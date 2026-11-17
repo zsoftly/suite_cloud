@@ -332,7 +332,7 @@ class TestStalwartCluster(IntegrationTestCase):
                 "@type": "S3",
                 "region": {"@type": "ApSouth1"},
                 "bucket": "mail",
-                "accessKey": {"@type": "Value", "value": "AK"},
+                "accessKeyId": {"@type": "Value", "value": "AK"},
                 "secretKey": {"@type": "Value", "secret": "SK"},
                 "timeout": 15000,
                 "maxRetries": 3,
@@ -346,7 +346,7 @@ class TestStalwartCluster(IntegrationTestCase):
         compatible = make_store("Blob", "S3", region="fr-par", endpoint=endpoint, **bucket)
         self.assertEqual(
             compatible.config["region"],
-            {"@type": "Custom", "customEndpoint": endpoint, "customRegion": "fr-par"},
+            {"@type": "Custom", "url": endpoint, "region": "fr-par"},
         )
         self.assertNotIn("endpoint", compatible.config)
 
@@ -792,7 +792,7 @@ class TestStalwartCluster(IntegrationTestCase):
         bootstrap = plan.bootstrap_plan(cluster)[0]
         self.assertEqual(bootstrap["object"], "Bootstrap")
         value = bootstrap["value"]
-        self.assertEqual(value["serverHostname"], f"mail.blr.{ROOT_DOMAIN}")
+        self.assertEqual(value["defaultHostname"], f"mail.blr.{ROOT_DOMAIN}")
         self.assertEqual(value["defaultDomain"], f"mail.blr.{ROOT_DOMAIN}")
         self.assertEqual(value["dataStore"]["@type"], "PostgreSql")
         self.assertEqual(value["dataStore"]["authSecret"], {"@type": "Value", "secret": "pg-secret"})
@@ -842,7 +842,7 @@ class TestStalwartCluster(IntegrationTestCase):
         )
         self.assertEqual(
             operations["SpamSettings"]["value"]["spamFilterRulesUrl"],
-            "https://github.com/stalwartlabs/spam-filter/releases/download/v3.0.1/spam-filter-rules.json.gz",
+            "https://github.com/stalwartlabs/spam-filter/releases/download/v3.0.4/spam-filter-rules.json.gz",
         )
         # The first normal start names a cluster role and checks its resolver for DNSSEC, so both
         # come before it with the pin.
