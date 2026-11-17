@@ -17,9 +17,9 @@ from suite_cloud.utils import assert_test_host, get_config, log_exception
 # server. A System Manager can create Server Job rows; a free choice here would be a way to
 # run any callable in the bench as the worker.
 VARIABLES_BUILDERS = (
-    "suite_cloud.mail.cluster.bootstrap.build_node_variables",
-    "suite_cloud.mail.cluster.bootstrap.build_command_variables",
-    "suite_cloud.mail.cluster.egress.build_gateway_variables",
+    "suite_cloud.cloud_mail.cluster.bootstrap.build_node_variables",
+    "suite_cloud.cloud_mail.cluster.bootstrap.build_command_variables",
+    "suite_cloud.cloud_mail.cluster.egress.build_gateway_variables",
 )
 CALLBACKS = ("after_provision", "after_upgrade", "after_install_token", "after_install_outbound_scanner")
 

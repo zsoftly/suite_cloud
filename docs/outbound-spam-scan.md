@@ -4,7 +4,7 @@ Suite Cloud scans each message that a signed-in Mail Account sends, before Stalw
 
 Stalwart's built-in filter never scores a signed-in sender, whatever `MtaStageData.enableSpamFilter` says (`spam_classify` in `crates/smtp/src/inbound/spam.rs`). So each node runs Rspamd as a milter on `127.0.0.1:11332`.
 
-The code is in `suite_cloud/mail/cluster/outbound_scan.py` (the milter and the trusted accounts), `suite_cloud/mail/cluster/rspamd.py` (the node files and the install state of each node) and `suite_cloud/telemetry/outbound_scans.py` (the scan records). The scan recorder and its shipper are in `suite_cloud/provisioning/rspamd/`. The playbook is `suite_cloud/provisioning/playbooks/install-rspamd.yml`.
+The code is in `suite_cloud/cloud_mail/cluster/outbound_scan.py` (the milter and the trusted accounts), `suite_cloud/cloud_mail/cluster/rspamd.py` (the node files and the install state of each node) and `suite_cloud/telemetry/outbound_scans.py` (the scan records). The scan recorder and its shipper are in `suite_cloud/provisioning/rspamd/`. The playbook is `suite_cloud/provisioning/playbooks/install-rspamd.yml`.
 
 ## Request flow
 

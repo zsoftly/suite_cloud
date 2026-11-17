@@ -14,8 +14,8 @@ from suite_cloud.api.tenant import (
     owned_page,
     visible,
 )
-from suite_cloud.mail.doctype.mail_group.mail_group import group_payloads
-from suite_cloud.mail.tenancy import quotas as quota_rows
+from suite_cloud.cloud_mail.doctype.mail_group.mail_group import group_payloads
+from suite_cloud.cloud_mail.tenancy import quotas as quota_rows
 
 PAGE_CAP = 500  # the dashboard's largest page
 

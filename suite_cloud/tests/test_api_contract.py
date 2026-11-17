@@ -8,7 +8,7 @@ from frappe.tests import UnitTestCase
 from suite_cloud.api import email, sending_limits, telemetry, tenant
 from suite_cloud.api.mail import accounts, dmarc, domains, groups, mailing_lists, meta, tls
 from suite_cloud.api.tenant import InvalidInputError, api_errors, as_datetime, as_list
-from suite_cloud.mail.stalwart.errors import (
+from suite_cloud.cloud_mail.stalwart.errors import (
     StalwartError,
     StalwartRejectedError,
     StalwartUnauthorizedError,

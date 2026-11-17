@@ -1,4 +1,4 @@
 Suite Cloud
-Mail
+Cloud Mail
 Hosting
 Telemetry

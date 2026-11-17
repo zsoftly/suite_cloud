@@ -21,13 +21,13 @@ from frappe.query_builder.functions import Count
 from frappe.utils import cint, get_datetime, sbool
 from frappe.utils.password import get_decrypted_password
 
-from suite_cloud.mail.stalwart.errors import (
+from suite_cloud.cloud_mail.stalwart.errors import (
     StalwartError,
     StalwartRejectedError,
     StalwartUnauthorizedError,
     StalwartUnavailableError,
 )
-from suite_cloud.mail.tenancy.addresses import NOUNS
+from suite_cloud.cloud_mail.tenancy.addresses import NOUNS
 
 API_PATHS = ("/api/v2/method/suite_cloud.api.", "/api/method/suite_cloud.api.")
 ERROR_KEYS = ("type", "message", "exception")

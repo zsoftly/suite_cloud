@@ -36,7 +36,7 @@ bench --site suite-cloud.localhost set-config allow_tests true
 bench --site suite-cloud.localhost run-tests --app suite_cloud --module suite_cloud.hosting.tests.test_signup
 ```
 
-CI runs each test module on its own, in four jobs: Core (`suite_cloud/tests`), Mail (`suite_cloud/mail/tests`), Hosting (`suite_cloud/hosting/tests`) and Telemetry (`suite_cloud/telemetry/tests`). Run the modules of the folder you changed.
+CI runs each test module on its own, in four jobs: Core (`suite_cloud/tests`), Mail (`suite_cloud/cloud_mail/tests`), Hosting (`suite_cloud/hosting/tests`) and Telemetry (`suite_cloud/telemetry/tests`). Run the modules of the folder you changed.
 
 The tests create records under `.frappe.test` and delete only those. So you can run them on the site that holds your real cluster and zones.
 

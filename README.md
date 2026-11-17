@@ -33,7 +33,7 @@ The app has three modules, so one CODEOWNERS line can cover each product:
 | Module | Folder | Holds |
 | --- | --- | --- |
 | **Suite Cloud** | `suite_cloud/suite_cloud` | What every hosted product shares: DNS Zone, DNS Record, Server Job, Suite Tenant, Suite Cloud Settings, plus `provisioning` (Ansible over SSH) and `dns` (provider client, resolver). |
-| **Mail** | `suite_cloud/mail` | The mail product: Mail Store, Cluster, Node, Egress Gateway and IP Pool, the mail directory (Mail Domain, Mail Account, Mail Group, Mailing List), and the `stalwart`, `cluster` and `tenancy` packages. |
+| **Cloud Mail** | `suite_cloud/cloud_mail` | The mail product: Mail Store, Cluster, Node, Egress Gateway and IP Pool, the mail directory (Mail Domain, Mail Account, Mail Group, Mailing List), and the `stalwart`, `cluster` and `tenancy` packages. |
 | **Telemetry** | `suite_cloud/telemetry` | The events and metrics Stalwart pushes: the rows made from its WebHook and OTLP requests, the spool that stages a batch as parquet, the `Warehouse` that loads the files into Frappe Insights' DuckDB and prunes them, the Insights dashboards for Stalwart, and `install`, which installs each server's Suite Cloud token and rolls the telemetry push out. |
 | **Hosting** | `suite_cloud/hosting` | Suite sites on Frappe Cloud: Region, Virtual Machine, Suite Site, Suite Tenant Request, the `central` clients (Central, Pilot, the site's REST API) and the `machines`, `sites`, `domains` and `capacity` steps. |
 
@@ -145,7 +145,7 @@ The servers restart in parallel jobs, not one at a time. **Rotate Suite Cloud To
 A Stalwart that a Suite tenant administered directly, before Suite Cloud, holds domains, accounts,
 groups and lists that Suite Cloud never created. Register it as a cluster, create the Suite Tenant
 for it, then use **Adopt Directory** on the Suite Tenant (or run
-`suite_cloud.mail.tenancy.adopt.adopt_directory` with the tenant name). Every object on the
+`suite_cloud.cloud_mail.tenancy.adopt.adopt_directory` with the tenant name). Every object on the
 cluster is recorded with the id it already has, and nothing is pushed back. The cluster must serve
 that one tenant, since nothing on it says which tenant an object belongs to; an object whose record
 already exists anywhere is skipped, and each object imports on its own, so one that cannot (an
@@ -255,8 +255,8 @@ bench --site yoursite run-tests --app suite_cloud --test-category all
 
 Tests live next to their module: `suite_cloud/tests` for the generic app (settings, fixtures)
 `suite_cloud/hosting/tests` for hosting, with fakes of Central, Pilot and the site's REST API,
-and `suite_cloud/mail/tests` for mail, including the fake Stalwart
-(`suite_cloud/mail/tests/fake_stalwart.py`), an in-process JMAP management server the real
+and `suite_cloud/cloud_mail/tests` for mail, including the fake Stalwart
+(`suite_cloud/cloud_mail/tests/fake_stalwart.py`), an in-process JMAP management server the real
 client talks to unchanged. Nothing reaches a real server or a real DNS provider. Tests that create
 tenants use names under `.frappe.test` and clean up only those, so they can run on a site that also
 holds real clusters.

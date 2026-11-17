@@ -12,7 +12,7 @@ from duckdb import IOException
 from frappe.tests import IntegrationTestCase
 from frappe.utils import get_files_path
 
-from suite_cloud.mail.tests.fixtures import error_log_count, make_cluster, make_node
+from suite_cloud.cloud_mail.tests.fixtures import error_log_count, make_cluster, make_node
 from suite_cloud.telemetry import (
     CURRENT_METRICS,
     EVENT_DATA_COLUMNS,

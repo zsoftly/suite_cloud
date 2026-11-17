@@ -24,7 +24,7 @@ from frappe.utils import (
     now_datetime,
 )
 
-from suite_cloud.mail.cluster import rspamd
+from suite_cloud.cloud_mail.cluster import rspamd
 from suite_cloud.suite_cloud.doctype.tenant_email.email_types import get_inline_images
 from suite_cloud.telemetry import status
 from suite_cloud.telemetry.warehouse import Warehouse

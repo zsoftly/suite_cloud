@@ -9,11 +9,11 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint, flt, get_first_day, now, now_datetime, today
 
-from suite_cloud.mail.stalwart import get_client
-from suite_cloud.mail.stalwart.errors import StalwartError
-from suite_cloud.mail.tenancy.permissions import TENANT_ROLE, assert_can_own
-from suite_cloud.mail.tenancy.placement import pick_cluster
-from suite_cloud.mail.tenancy.usage import USAGE_PROPERTIES
+from suite_cloud.cloud_mail.stalwart import get_client
+from suite_cloud.cloud_mail.stalwart.errors import StalwartError
+from suite_cloud.cloud_mail.tenancy.permissions import TENANT_ROLE, assert_can_own
+from suite_cloud.cloud_mail.tenancy.placement import pick_cluster
+from suite_cloud.cloud_mail.tenancy.usage import USAGE_PROPERTIES
 from suite_cloud.utils import get_config, log_exception, utc_iso
 
 DIRECTORY_DOCTYPES = ("Mail Account", "Mail Group", "Mailing List", "Mail Domain")
@@ -115,7 +115,7 @@ class SuiteTenant(Document):
     def on_update(self) -> None:
         before = self.get_doc_before_save()
         if before and before.egress_pool != self.egress_pool:
-            from suite_cloud.mail.cluster import push
+            from suite_cloud.cloud_mail.cluster import push
 
             for name in {before.stalwart_cluster, self.stalwart_cluster} - {None}:
                 push.resync_cluster_after_commit(name)
@@ -139,7 +139,7 @@ class SuiteTenant(Document):
         """Records the domains, accounts, groups and lists the cluster already holds for this tenant."""
 
         frappe.only_for("System Manager")
-        from suite_cloud.mail.tenancy.adopt import adopt_directory
+        from suite_cloud.cloud_mail.tenancy.adopt import adopt_directory
 
         return adopt_directory(self.name)
 

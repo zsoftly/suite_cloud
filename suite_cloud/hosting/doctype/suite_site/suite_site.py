@@ -9,7 +9,7 @@ from frappe.model.document import Document
 
 from suite_cloud.hosting import domains, labels, sites
 from suite_cloud.hosting.central import site as site_api
-from suite_cloud.mail.tenancy.addresses import validate_email_address
+from suite_cloud.cloud_mail.tenancy.addresses import validate_email_address
 from suite_cloud.utils import get_config
 
 
@@ -136,7 +136,7 @@ class SuiteSite(Document):
         return bool(row and row.status == "Active" and (self.primary_domain or row.primary_skipped))
 
     def pending_follow_ups(self) -> list[tuple[str, object]]:
-        from suite_cloud.mail.tenancy import hosted_domain
+        from suite_cloud.cloud_mail.tenancy import hosted_domain
 
         steps = []
         if not self.mail_domain_verified:

@@ -7,8 +7,8 @@ from suite_cloud.hosting import capacity
 from suite_cloud.hosting.doctype.region.region import sync_regions
 from suite_cloud.hosting.tests.fakes import REGION
 from suite_cloud.hosting.tests.fixtures import MAIL_ZONE, SITE_ZONE, HostingFixtures, make_region
-from suite_cloud.mail.tenancy.placement import pick_cluster
-from suite_cloud.mail.tests.fixtures import ROOT_DOMAIN, activate_cluster, make_cluster
+from suite_cloud.cloud_mail.tenancy.placement import pick_cluster
+from suite_cloud.cloud_mail.tests.fixtures import ROOT_DOMAIN, activate_cluster, make_cluster
 
 
 class TestHostingSettings(HostingFixtures, IntegrationTestCase):

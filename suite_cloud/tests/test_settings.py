@@ -25,7 +25,7 @@ class TestSuiteCloudSettings(IntegrationTestCase):
             self.assertEqual(ttl, self.settings.default_dns_ttl)
 
     def test_tls_verification_comes_from_settings(self) -> None:
-        from suite_cloud.mail.stalwart import verify_tls
+        from suite_cloud.cloud_mail.stalwart import verify_tls
 
         self.settings.verify_stalwart_tls = 1
         self.settings.save()

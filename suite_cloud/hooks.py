@@ -23,7 +23,7 @@ auth_hooks = ["suite_cloud.api.tenant.authenticate", "suite_cloud.api.telemetry.
 # ============================================================================
 # Permissions: tenant owners reach only the rows of the tenants they own
 # ============================================================================
-PERMISSIONS = "suite_cloud.mail.tenancy.permissions"
+PERMISSIONS = "suite_cloud.cloud_mail.tenancy.permissions"
 TENANT_OWNED_DOCTYPES = (
     "Mail Domain",
     "Mail Account",
@@ -49,11 +49,11 @@ doc_events = {"User": {"validate": f"{PERMISSIONS}.keep_owner_role"}}
 # ============================================================================
 scheduler_events = {
     "cron": {
-        "* * * * *": ["suite_cloud.mail.sending_limits.flush_usage"],
+        "* * * * *": ["suite_cloud.cloud_mail.sending_limits.flush_usage"],
         "*/5 * * * *": [
             "suite_cloud.suite_cloud.doctype.server_job.server_job.retry_failed_jobs",
-            "suite_cloud.mail.doctype.stalwart_node.stalwart_node.poll_pending_nodes",
-            "suite_cloud.mail.doctype.egress_gateway.egress_gateway.poll_pending_gateways",
+            "suite_cloud.cloud_mail.doctype.stalwart_node.stalwart_node.poll_pending_nodes",
+            "suite_cloud.cloud_mail.doctype.egress_gateway.egress_gateway.poll_pending_gateways",
             "suite_cloud.hosting.machines.refresh_fleet",
             "suite_cloud.hosting.sites.poll_pending_sites",
             "suite_cloud.hosting.doctype.suite_tenant_request.suite_tenant_request.resume_requests",
@@ -63,23 +63,23 @@ scheduler_events = {
         ],
     },
     "hourly": [
-        "suite_cloud.mail.doctype.mail_domain.mail_domain.refresh_rotating_domains",
-        "suite_cloud.mail.doctype.mail_domain.mail_domain.verify_unverified_domains",
-        "suite_cloud.mail.doctype.dmarc_report.dmarc_report.fetch_all_clusters",
-        "suite_cloud.mail.doctype.tls_report.tls_report.fetch_all_clusters",
+        "suite_cloud.cloud_mail.doctype.mail_domain.mail_domain.refresh_rotating_domains",
+        "suite_cloud.cloud_mail.doctype.mail_domain.mail_domain.verify_unverified_domains",
+        "suite_cloud.cloud_mail.doctype.dmarc_report.dmarc_report.fetch_all_clusters",
+        "suite_cloud.cloud_mail.doctype.tls_report.tls_report.fetch_all_clusters",
         "suite_cloud.hosting.capacity.ensure_capacity",
     ],
     "daily": [
         "suite_cloud.suite_cloud.doctype.dns_record.dns_record.verify_all_dns_records",
-        "suite_cloud.mail.doctype.stalwart_cluster.stalwart_cluster.check_all_clusters",
-        "suite_cloud.mail.doctype.stalwart_node.stalwart_node.verify_all_ptr_records",
-        "suite_cloud.mail.doctype.egress_ip_pool.egress_ip_pool.verify_all_ptr_records",
-        "suite_cloud.mail.doctype.dmarc_report.dmarc_report.prune_expired_reports",
-        "suite_cloud.mail.doctype.tls_report.tls_report.prune_expired_reports",
+        "suite_cloud.cloud_mail.doctype.stalwart_cluster.stalwart_cluster.check_all_clusters",
+        "suite_cloud.cloud_mail.doctype.stalwart_node.stalwart_node.verify_all_ptr_records",
+        "suite_cloud.cloud_mail.doctype.egress_ip_pool.egress_ip_pool.verify_all_ptr_records",
+        "suite_cloud.cloud_mail.doctype.dmarc_report.dmarc_report.prune_expired_reports",
+        "suite_cloud.cloud_mail.doctype.tls_report.tls_report.prune_expired_reports",
         "suite_cloud.hosting.machines.sync_fleet",
         "suite_cloud.hosting.doctype.suite_tenant_request.suite_tenant_request.expire_requests",
         "suite_cloud.telemetry.warehouse.prune_expired_rows",
-        "suite_cloud.mail.doctype.mail_send_usage.mail_send_usage.prune_usage_job",
+        "suite_cloud.cloud_mail.doctype.mail_send_usage.mail_send_usage.prune_usage_job",
     ],
 }
 

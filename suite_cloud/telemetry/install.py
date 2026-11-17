@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 import frappe
 from frappe.utils import cint
 
-from suite_cloud.mail.cluster import push, server_token, telemetry
+from suite_cloud.cloud_mail.cluster import push, server_token, telemetry
 from suite_cloud.suite_cloud.doctype.server_job.server_job import create_server_job
 from suite_cloud.utils import get_config, log_exception
 
@@ -16,8 +16,8 @@ if TYPE_CHECKING:
 PLAYBOOK = "install-token.yml"
 ROLL_OUT_KEY = "suite_cloud:telemetry_roll_out"  # the settings change the last roll-out applied
 ROLL_OUT_TIMEOUT = 600  # seconds a roll-out may hold, or wait for, the roll-out lock
-NODE_BUILDER = "suite_cloud.mail.cluster.bootstrap.build_node_variables"
-GATEWAY_BUILDER = "suite_cloud.mail.cluster.egress.build_gateway_variables"
+NODE_BUILDER = "suite_cloud.cloud_mail.cluster.bootstrap.build_node_variables"
+GATEWAY_BUILDER = "suite_cloud.cloud_mail.cluster.egress.build_gateway_variables"
 
 
 def is_telemetry_enabled() -> bool:

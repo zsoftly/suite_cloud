@@ -12,8 +12,8 @@ import frappe
 from frappe.tests import IntegrationTestCase
 from frappe.utils import get_files_path, get_url_to_form, now_datetime
 
-from suite_cloud.mail.cluster import rspamd
-from suite_cloud.mail.tests.fixtures import error_log_count, make_cluster, make_node
+from suite_cloud.cloud_mail.cluster import rspamd
+from suite_cloud.cloud_mail.tests.fixtures import error_log_count, make_cluster, make_node
 from suite_cloud.telemetry import EVENTS, METRICS, status
 from suite_cloud.telemetry.alerts import ERROR_RATE, METRICS_SILENT, SCAN_SILENT, Alerts
 from suite_cloud.telemetry.spool import Spool

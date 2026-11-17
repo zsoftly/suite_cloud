@@ -10,7 +10,7 @@ import frappe
 from werkzeug.wrappers import Response
 
 from suite_cloud.api.telemetry import hook_api
-from suite_cloud.mail import sending_limits
+from suite_cloud.cloud_mail import sending_limits
 
 ACCEPT = {"action": "accept"}
 

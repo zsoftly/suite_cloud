@@ -10,7 +10,7 @@ from uuid import uuid7
 import frappe
 from frappe.tests import IntegrationTestCase
 
-from suite_cloud.mail.tests.fixtures import error_log_count
+from suite_cloud.cloud_mail.tests.fixtures import error_log_count
 from suite_cloud.telemetry import EVENTS, METRICS
 from suite_cloud.telemetry.spool import Spool
 

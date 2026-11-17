@@ -22,7 +22,7 @@ from google.protobuf.message import DecodeError
 from werkzeug.wrappers import Response
 
 from suite_cloud.api.tenant import InvalidInputError, assert_arguments, throttle
-from suite_cloud.mail.cluster import server_token
+from suite_cloud.cloud_mail.cluster import server_token
 from suite_cloud.telemetry import (
     EVENTS,
     METRICS,

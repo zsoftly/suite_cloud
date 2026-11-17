@@ -17,15 +17,15 @@ from suite_cloud.api.tenant import (
     page_size,
     visible,
 )
-from suite_cloud.mail.doctype.mail_account.mail_account import (
+from suite_cloud.cloud_mail.doctype.mail_account.mail_account import (
     account_payloads,
     validate_password,
 )
-from suite_cloud.mail.doctype.mail_send_usage.mail_send_usage import usage_history
-from suite_cloud.mail.tenancy import account_credentials, sync
-from suite_cloud.mail.tenancy import quotas as quota_rows
-from suite_cloud.mail.tenancy.account_credentials import API_KEYS, APP_PASSWORDS, Kind
-from suite_cloud.mail.tenancy.usage import used_disk_by_name
+from suite_cloud.cloud_mail.doctype.mail_send_usage.mail_send_usage import usage_history
+from suite_cloud.cloud_mail.tenancy import account_credentials, sync
+from suite_cloud.cloud_mail.tenancy import quotas as quota_rows
+from suite_cloud.cloud_mail.tenancy.account_credentials import API_KEYS, APP_PASSWORDS, Kind
+from suite_cloud.cloud_mail.tenancy.usage import used_disk_by_name
 from suite_cloud.utils import local_datetime
 
 ACCOUNT_PAGE_CAP = 200

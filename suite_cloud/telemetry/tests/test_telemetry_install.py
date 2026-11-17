@@ -4,8 +4,8 @@ from unittest.mock import patch
 import frappe
 from frappe.tests import IntegrationTestCase
 
-from suite_cloud.mail.cluster import bootstrap, egress, rspamd, server_token
-from suite_cloud.mail.tests.fixtures import configure_settings, make_cluster, make_node
+from suite_cloud.cloud_mail.cluster import bootstrap, egress, rspamd, server_token
+from suite_cloud.cloud_mail.tests.fixtures import configure_settings, make_cluster, make_node
 from suite_cloud.provisioning.ansible import playbook_task_names
 from suite_cloud.telemetry import install, status
 from suite_cloud.utils import clear_config_cache
@@ -88,9 +88,9 @@ class TestTelemetryInstall(IntegrationTestCase):
         self.node.db_set("status", "Active")
         self.gateway.db_set("status", "Active")
         cluster_push = (
-            "suite_cloud.mail.doctype.stalwart_cluster.stalwart_cluster.StalwartCluster.push_config"
+            "suite_cloud.cloud_mail.doctype.stalwart_cluster.stalwart_cluster.StalwartCluster.push_config"
         )
-        gateway_push = "suite_cloud.mail.doctype.egress_gateway.egress_gateway.EgressGateway.push_config"
+        gateway_push = "suite_cloud.cloud_mail.doctype.egress_gateway.egress_gateway.EgressGateway.push_config"
 
         def titles(names: list[str]) -> set[str]:
             return {frappe.db.get_value("Server Job", name, "title") for name in names}
@@ -148,7 +148,7 @@ class TestTelemetryInstall(IntegrationTestCase):
         settings.save()
         clear_config_cache()
         cluster_push = (
-            "suite_cloud.mail.doctype.stalwart_cluster.stalwart_cluster.StalwartCluster.push_config"
+            "suite_cloud.cloud_mail.doctype.stalwart_cluster.stalwart_cluster.StalwartCluster.push_config"
         )
         before = set(frappe.get_all("Server Job", pluck="name"))
         with patch(EXECUTE), patch(cluster_push) as pushed:

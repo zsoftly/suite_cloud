@@ -13,7 +13,7 @@ from uuid import NAMESPACE_URL, uuid5
 import orjson
 from frappe.utils import flt
 
-from suite_cloud.mail.cluster.rspamd import SCAN_FIELDS
+from suite_cloud.cloud_mail.cluster.rspamd import SCAN_FIELDS
 from suite_cloud.telemetry.push import Skipped
 from suite_cloud.utils import get_config
 
