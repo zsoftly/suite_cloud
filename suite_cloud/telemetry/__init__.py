@@ -465,3 +465,11 @@ MAIL_DOMAINS = TelemetryTable(
 )
 
 DIMENSIONS = (NODES, MAIL_DOMAINS)
+
+
+def insights_installed() -> bool:
+    """Insights holds the telemetry warehouse; without it the warehouse, dashboards and alerts are off."""
+
+    import frappe
+
+    return "insights" in frappe.get_installed_apps()

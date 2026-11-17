@@ -43,6 +43,10 @@ DEFAULT_ERRORS_PER_HOUR = 100  # the settings' default, used until the site has 
 def check_server_alerts() -> None:
     """Scheduled every five minutes."""
 
+    from suite_cloud.telemetry import insights_installed
+
+    if not insights_installed():
+        return
     Alerts().check()
 
 
