@@ -338,11 +338,11 @@
    "label": "Stalwart Admin"
   },
   {
-   "default": "admin",
+   "description": "Left blank, a new cluster gets admin, and an externally managed one suite-admin: its recovery administrator is usually named admin.",
    "fieldname": "admin_username",
    "fieldtype": "Data",
    "label": "Admin Username",
-   "read_only": 1
+   "read_only_depends_on": "eval:!doc.__islocal || !doc.externally_managed"
   },
   {
    "description": "Generated on save.",
